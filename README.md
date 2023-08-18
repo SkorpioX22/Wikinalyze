@@ -3,7 +3,7 @@ A simple Wikipedia article length comparison tool. Powered by Python.
 
 Intructions
 ==============
-Open the GUI BASED folder inside MAIN after downloding the source code for the latest release. Find GUI BASED.exe and run it. A terminal will pop up for debugging purposes.
+Open the **exe bin** folder inside the **Program and files** folder after downloding the source code for the latest release. Find Wikinalyze.exe and run it. A terminal will pop up for debugging purposes.
 
 A prompt will appear asking you to enter the number of articles to compare. The current limit is 50.
 
