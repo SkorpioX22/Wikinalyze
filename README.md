@@ -1,6 +1,12 @@
 # Wikinalyze
 A simple Wikipedia article length comparison tool. Powered by Python. Developed during WikiMania Singpore 2023. 
 
+What can Wikinalyze do?
+==============
+Wikinalyze is based on Python and uses the Wikipedia API module and Matplotlib to plot the byte counts of articles the user provides. The end result is a bar chart with each bar allocated to each article for comparison. 
+
+With this, Wikinalyze can be used to compare articles with the same subject in different fields. An exmaple is comparing the article length of Covid-19 articles in different countries to see which country has the least documentation on its local Covid-19 presence.
+
 Intructions
 ==============
 Open the **exe bin** folder inside the **Program and files** folder after downloding the source code for the latest release. Find Wikinalyze.exe and run it. A terminal will pop up for debugging purposes.
