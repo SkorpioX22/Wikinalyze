@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox
 import wikipediaapi
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+import progressbar
+from tkinter import Toplevel
 
 class WikipediaByteCountApp:
     def __init__(self, root):
@@ -20,6 +22,15 @@ class WikipediaByteCountApp:
 
         self.byte_count_canvas = None
 
+    def validate_article(self, title):
+        wiki_wiki = wikipediaapi.Wikipedia(
+            language='en',
+            extract_format=wikipediaapi.ExtractFormat.WIKI,
+            user_agent='Your User Agent'
+        )
+        page = wiki_wiki.page(title)
+        return page.exists()
+
     def show_articles(self):
         num_articles = int(self.num_articles_entry.get())
         if num_articles <= 0 or num_articles > 50:
@@ -29,9 +40,12 @@ class WikipediaByteCountApp:
         articles = []
         for i in range(num_articles):
             article = self.input_article_title(f"Enter the title of article {i + 1}:")
+            if not self.validate_article(article):
+                self.show_error(f"Article '{article}' does not exist on Wikipedia.")
+                return
             articles.append(article)
 
-        self.plot_byte_counts(articles)
+        self.show_progress_window(articles)
 
     def input_article_title(self, prompt):
         article = simpledialog.askstring("Enter Article Title", prompt)
@@ -70,6 +84,25 @@ class WikipediaByteCountApp:
 
         self.byte_count_canvas = FigureCanvasTkAgg(fig, master=self.root)
         self.byte_count_canvas.get_tk_widget().grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+
+        toolbar_frame = ttk.Frame(self.root)
+        toolbar_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        NavigationToolbar2Tk(self.byte_count_canvas, toolbar_frame)
+
+    def show_progress_window(self, articles):
+        progress_window = Toplevel(self.root)
+        progress_window.title("Fetching Byte Counts")
+
+        progress_label = ttk.Label(progress_window, text="Fetching byte counts...")
+        progress_label.pack(padx=20, pady=10)
+
+        with progressbar.ProgressBar(max_value=len(articles)) as bar:
+            for i, article in enumerate(articles):
+                self.get_byte_count(article)
+                bar.update(i + 1)
+
+        progress_window.destroy()
+        self.plot_byte_counts(articles)
 
 if __name__ == "__main__":
     root = tk.Tk()
