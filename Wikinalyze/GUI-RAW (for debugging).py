@@ -3,22 +3,23 @@ from tkinter import ttk, simpledialog, messagebox
 import wikipediaapi
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-import progressbar
-from tkinter import Toplevel
 
 class WikipediaByteCountApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Wikipedia Article Byte Count Comparison")
+        self.root.title("Wikinalyze")
 
-        self.num_articles_label = ttk.Label(root, text="Enter the number of Wikipedia articles (up to 50):")
+        self.num_articles_label = ttk.Label(root, text="Enter (up to 50) the number of Wikipedia articles to compare:")
         self.num_articles_label.grid(row=0, column=0, padx=10, pady=10)
         
         self.num_articles_entry = ttk.Entry(root)
         self.num_articles_entry.grid(row=0, column=1, padx=10, pady=10)
 
-        self.submit_button = ttk.Button(root, text="Submit", command=self.show_articles)
+        self.submit_button = ttk.Button(root, text="Start Comparison", command=self.show_articles)
         self.submit_button.grid(row=0, column=2, padx=10, pady=10)
+
+        self.github_button = tk.Button(root, text="Visit my GitHub page!", fg="white", bg="black", command=self.open_github)
+        self.github_button.grid(row=0, column=3, padx=10, pady=10)
 
         self.byte_count_canvas = None
 
@@ -45,7 +46,7 @@ class WikipediaByteCountApp:
                 return
             articles.append(article)
 
-        self.show_progress_window(articles)
+        self.plot_byte_counts(articles)
 
     def input_article_title(self, prompt):
         article = simpledialog.askstring("Enter Article Title", prompt)
@@ -83,26 +84,15 @@ class WikipediaByteCountApp:
         plt.tight_layout()
 
         self.byte_count_canvas = FigureCanvasTkAgg(fig, master=self.root)
-        self.byte_count_canvas.get_tk_widget().grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+        self.byte_count_canvas.get_tk_widget().grid(row=1, column=0, columnspan=4, padx=10, pady=10)
 
         toolbar_frame = ttk.Frame(self.root)
-        toolbar_frame.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        toolbar_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
         NavigationToolbar2Tk(self.byte_count_canvas, toolbar_frame)
 
-    def show_progress_window(self, articles):
-        progress_window = Toplevel(self.root)
-        progress_window.title("Fetching Byte Counts")
-
-        progress_label = ttk.Label(progress_window, text="Fetching byte counts...")
-        progress_label.pack(padx=20, pady=10)
-
-        with progressbar.ProgressBar(max_value=len(articles)) as bar:
-            for i, article in enumerate(articles):
-                self.get_byte_count(article)
-                bar.update(i + 1)
-
-        progress_window.destroy()
-        self.plot_byte_counts(articles)
+    def open_github(self):
+        import webbrowser
+        webbrowser.open("https://github.com/SkorpioX22/Wikinalyze")
 
 if __name__ == "__main__":
     root = tk.Tk()
