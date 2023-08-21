@@ -1,5 +1,5 @@
 Wikinalyze versions are covered by a security patch for the length of their service life.
-
+```
 ## Version support:
 
 | **Version** | **Release Code** | **Status** 
