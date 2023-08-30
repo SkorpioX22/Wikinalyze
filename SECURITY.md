@@ -9,4 +9,5 @@ Version support
 | 1.5.3   | SOLARO       | Supported: Used as the "Legacy" version of Wikinalyze.
 | 2.0.0   | HELIOS       | Ended Support: Ended its service life as newer patches have been implemented.
 | 2.1.0   | HELIOS       | Supported: Used as the rollback version of Wikinalyze, stable.
-| 2.2.0   | PYTHAX       | Supported: Used as the latest version of Wikinalyze, stable. Installer Based.
+| 2.2.0   | PYTHAX       | Ended Support: Ended its service life as a trial release of Wikinalyze equipped with an exe setup installer built on 7zip's SFX archive.
+| 2.2.5   | PYTHAX       | SupportedL Used as the latest version of Wikinalyze, stable, equipped with an exe installer built on InnoSetup
