@@ -1,27 +1,44 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog, messagebox
+from tkinter import ttk, messagebox
 import wikipediaapi
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import progressbar
 
 class WikipediaByteCountApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Wikinalyze")
+        self.root.title("Wikipedia Article Byte Count Comparison")
 
-        self.num_articles_label = ttk.Label(root, text="Enter (up to 50) the number of Wikipedia articles to compare:")
-        self.num_articles_label.grid(row=0, column=0, padx=10, pady=10)
-        
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(1, weight=1)
+
+        self.header_label = ttk.Label(root, text="Wikinalyze, by skorpiox22", font=("Helvetica", 12, "bold"))
+        self.header_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
+
+        self.num_articles_label = ttk.Label(root, text="Enter the number of Wikipedia articles (up to 50):")
+        self.num_articles_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+
         self.num_articles_entry = ttk.Entry(root)
-        self.num_articles_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.num_articles_entry.grid(row=1, column=1, padx=10, pady=10)
 
-        self.submit_button = ttk.Button(root, text="Start Comparison", command=self.show_articles)
-        self.submit_button.grid(row=0, column=2, padx=10, pady=10)
+        self.submit_button = ttk.Button(root, text="Submit", command=self.show_articles)
+        self.submit_button.grid(row=1, column=2, padx=10, pady=10, sticky="e")
 
-        self.github_button = tk.Button(root, text="Visit my GitHub page!", fg="white", bg="black", command=self.open_github)
-        self.github_button.grid(row=0, column=3, padx=10, pady=10)
+        # Styling the GitHub button
+        self.style = ttk.Style()
+        self.style.configure("Black.TButton", foreground="white", background="black")
+        
+        self.github_button = tk.Button(root, text="Visit GitHub", fg="white", bg="black", command=self.open_github)
+        self.github_button.grid(row=1, column=3, padx=10, pady=10)
+
+        self.article_labels = []
+        self.articles = []
 
         self.byte_count_canvas = None
+
+    # (rest of your code remains the same)
+
 
     def validate_article(self, title):
         wiki_wiki = wikipediaapi.Wikipedia(
@@ -38,19 +55,54 @@ class WikipediaByteCountApp:
             self.show_error("Invalid number of articles. Please enter a value between 1 and 50.")
             return
 
-        articles = []
+        # Clear previous articles and labels
+        for label in self.article_labels:
+            label.destroy()
+        self.article_labels = []
+        self.articles = []
+
         for i in range(num_articles):
-            article = self.input_article_title(f"Enter the title of article {i + 1}:")
-            if not self.validate_article(article):
-                self.show_error(f"Article '{article}' does not exist on Wikipedia.")
-                return
-            articles.append(article)
+            label = ttk.Label(self.root, text=f"Enter the title of article {i + 1}:")
+            label.grid(row=i + 2, column=0, padx=10, pady=10, sticky="w")
+            self.article_labels.append(label)
 
-        self.plot_byte_counts(articles)
+            entry = ttk.Entry(self.root)
+            entry.grid(row=i + 2, column=1, padx=10, pady=10)
+            self.articles.append(entry)
 
-    def input_article_title(self, prompt):
-        article = simpledialog.askstring("Enter Article Title", prompt)
-        return article
+        self.submit_button.config(command=self.plot_byte_counts)
+
+    def plot_byte_counts(self):
+        if self.byte_count_canvas:
+            self.byte_count_canvas.get_tk_widget().destroy()
+
+        titles = []
+        byte_counts = []
+
+        with progressbar.ProgressBar(max_value=len(self.articles)) as bar:
+            for i, entry in enumerate(self.articles):
+                article = entry.get()
+                if not self.validate_article(article):
+                    self.show_error(f"Article '{article}' does not exist on Wikipedia.")
+                    return
+                titles.append(article)
+                byte_counts.append(self.get_byte_count(article))
+                bar.update(i + 1)
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.bar(titles, byte_counts)
+        ax.set_xlabel('Wikipedia Articles')
+        ax.set_ylabel('Byte Count')
+        ax.set_title('Byte Count of Wikipedia Articles')
+        ax.set_xticklabels(titles, rotation=15)
+        plt.tight_layout()
+
+        self.byte_count_canvas = FigureCanvasTkAgg(fig, master=self.root)
+        self.byte_count_canvas.get_tk_widget().grid(row=len(self.articles) + 2, column=0, columnspan=4, padx=10, pady=10)
+
+    def open_github(self):
+        import webbrowser
+        webbrowser.open("https://github.com/SkorpioX22/Wikinalyze")
 
     def show_error(self, message):
         messagebox.showerror("Error", message)
@@ -63,36 +115,6 @@ class WikipediaByteCountApp:
         )
         page = wiki_wiki.page(title)
         return page.length
-
-    def plot_byte_counts(self, articles):
-        if self.byte_count_canvas:
-            self.byte_count_canvas.get_tk_widget().destroy()
-
-        titles = []
-        byte_counts = []
-
-        for article in articles:
-            titles.append(article)
-            byte_counts.append(self.get_byte_count(article))
-
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.bar(titles, byte_counts)
-        ax.set_xlabel('Wikipedia Articles')
-        ax.set_ylabel('Byte Count')
-        ax.set_title('Byte Count of Wikipedia Articles')
-        ax.set_xticklabels(titles, rotation=15)
-        plt.tight_layout()
-
-        self.byte_count_canvas = FigureCanvasTkAgg(fig, master=self.root)
-        self.byte_count_canvas.get_tk_widget().grid(row=1, column=0, columnspan=4, padx=10, pady=10)
-
-        toolbar_frame = ttk.Frame(self.root)
-        toolbar_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
-        NavigationToolbar2Tk(self.byte_count_canvas, toolbar_frame)
-
-    def open_github(self):
-        import webbrowser
-        webbrowser.open("https://github.com/SkorpioX22/Wikinalyze")
 
 if __name__ == "__main__":
     root = tk.Tk()
