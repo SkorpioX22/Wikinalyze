@@ -1,5 +1,6 @@
 # Wikinalyze
 A simple Wikipedia article length comparison tool. Powered by Python. Developed during WikiMania Singpore 2023. 
+_Announcement: Wikinalyze will get slowed support. Refer to Issue#4 for details._
 
 What can Wikinalyze do?
 ==============
