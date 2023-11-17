@@ -13,4 +13,4 @@ Version support
 | 2.2.5   | PYTHAX2      | Supported: Used as the rollback version of Wikinalyze, stable.
 | 3.0.0   | INNOVA1      | Supported: Used as the latest version of Wikinalyze, stable, equipped with an exe installer built on InnoSetup
 
-*Numbers indicate the usage amount of the release code at the time of release.
+*release code numbers indicate a release under a previously used release code
