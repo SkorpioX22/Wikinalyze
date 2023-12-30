@@ -1,6 +1,6 @@
 # Wikinalyze
-A simple Wikipedia article length comparison tool. Powered by Python. Developed during WikiMania Singpore 2023. 
-_Announcement: Wikinalyze will get slowed support. Refer to Issue#4 for details._
+A simple Wikipedia article length comparison tool. Powered by Python. Developed during WikiMania Singapore 2023. 
+_Announcement: Wikinalyze has been archived. INNOVA has been declared the last release. No support will be povided for all versions, starting January 1, 2024._
 
 What can Wikinalyze do?
 ==============
