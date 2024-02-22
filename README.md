@@ -1,6 +1,15 @@
+A simple goodbye.
+==============
+_Thank you for everything. I know Wikinalyze as a project did not succeed, or grow in the slightest, but it was a pleasure to code solo for a while. I learned a lot. I learned how to use SourceForge. I learned how to create security policies. Thank you for those who downloaded. I truly wish everyone reading this the best. I hope to create more projects like this in the future. Goodbye for now. 22/2/2024
+
+With thanks,
+Dave Cruz, Skorpiox22.
+
 # Wikinalyze
 A simple Wikipedia article length comparison tool. Powered by Python. Developed during WikiMania Singapore 2023. 
 _Announcement: Wikinalyze has been archived. INNOVA has been declared the last release. No support will be povided for all versions, starting January 1, 2024._
+
+
 
 What can Wikinalyze do?
 ==============
