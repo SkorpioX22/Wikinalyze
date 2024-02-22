@@ -1,6 +1,6 @@
 A simple goodbye.
 ==============
-_Thank you for everything. I know Wikinalyze as a project did not succeed, or grow in the slightest, but it was a pleasure to code solo for a while. I learned a lot. I learned how to use SourceForge. I learned how to create security policies. Thank you for those who downloaded. I truly wish everyone reading this the best. I hope to create more projects like this in the future. Goodbye for now. 22/2/2024
+_Thank you for everything. I know Wikinalyze as a project did not succeed, or grow in the slightest, but it was a pleasure to code solo for a while. I learned a lot. I learned how to use SourceForge. I learned how to create security policies. Thank you for those who downloaded. I truly wish everyone reading this the best. I hope to create more projects like this in the future. Goodbye for now. 22/2/2024_
 
 With thanks,
 Dave Cruz, Skorpiox22.
